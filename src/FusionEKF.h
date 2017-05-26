@@ -31,6 +31,8 @@ public:
   */
   KalmanFilter ekf_;
 
+  int debug;
+
 private:
   // check whether the tracking toolbox was initiallized or not (first measurement)
   bool is_initialized_;

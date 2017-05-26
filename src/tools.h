@@ -29,6 +29,15 @@ public:
   */
   MatrixXd CalculateJacobian(const VectorXd& x_state);
 
+  /**
+  * A helper method to calculate h(x').
+  */
+  VectorXd CalcHx(const VectorXd& x_state);
+
+  /**
+  * A helper method to calculate Polar to Cartesian.
+  */
+  VectorXd PolarToCart(const VectorXd& x_state);
 };
 
 #endif /* TOOLS_H_ */
