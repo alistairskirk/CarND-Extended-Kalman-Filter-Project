@@ -56,11 +56,20 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 	}
 
 	//compute the Jacobian matrix
+	/*
 	float pxpy2 = pow(px, 2) + pow(py, 2);
 	Hj << px / pow(pxpy2, 0.5), py / pow(pxpy2, 0.5), 0., 0.,
 		-py / pxpy2, px / pxpy2, 0., 0.,
 		py*(vx*py - vy*px) / pow(pxpy2, (3 / 2)), px*(vy*px - vx*py) / pow(pxpy2, (3 / 2)), px / pow(pxpy2, 0.5), py / pow(pxpy2, 0.5);
-	
+	*/
+	float c1 = px*px + py*py;
+	float c2 = sqrt(c1);
+	float c3 = (c1*c2);
+
+	Hj << (px / c2), (py / c2), 0, 0,
+		-(py / c1), (px / c1), 0, 0,
+		py*(vx*py - vy*px) / c3, px*(px*vy - py*vx) / c3, px / c2, py / c2;
+
 	return Hj;
 }
 

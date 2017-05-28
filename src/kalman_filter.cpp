@@ -38,8 +38,8 @@ void KalmanFilter::Update(const VectorXd &z) {
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
-  MatrixXd PHt = P_ * Ht;
-  MatrixXd K = PHt * Si;
+  //MatrixXd PHt = P_ * Ht;
+  MatrixXd K = P_ * Ht * Si;
 
   //new estimate
   x_ = x_ + (K * y);
@@ -56,11 +56,11 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	//First find h(x') and call it z_pred:
 	Tools toolbox;
 	VectorXd z_pred = toolbox.CalcHx(x_);
-	VectorXd zcopy = z;
-	
-	VectorXd y = zcopy - z_pred;
+		
+	VectorXd y = z - z_pred;
 
 	// This is needed to make sure the radial angles are within range -pi to pi:
+	/*
 	if (y(1) > M_PI) {
 		while (y(1) > M_PI) {
 			y(1) -= 2 * M_PI;
@@ -71,6 +71,16 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 			y(1) += 2 * M_PI;
 		}
 	}
+	*/
+	while (y(1)>M_PI)
+	{
+		y(1) -= 2 * M_PI;
+	}
+	while (y(1)<-M_PI)
+	{
+		y(1) += 2 * M_PI;
+	}
+
 
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
